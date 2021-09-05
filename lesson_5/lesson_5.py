@@ -50,14 +50,14 @@ for dish in dishes:
     url = dish.find_element_by_xpath(".//div[@class = 'nm-shop-loop-thumbnail']/a").get_attribute('href')
     # Обработка возможных вариантов отображения цены
     prices = dish.find_elements_by_xpath(".//span[@class = 'woocommerce-Price-amount amount']")
-    price = [re.sub("\D", "", i.text) for i in prices]
+    price = [int(re.sub("\D", "", i.text)) for i in prices]
     if len(price) > 1:
-        if float(price[0]) > float(price[1]):  # Скидка
-            price = 0.01 * float(price[1])
+        if price[0] > price[1]:  # Скидка
+            price = 0.01 * price[1]
         else:  # Диапазон цен
-            price = 0.5 * (float(price[0]) + float(price[1]))
+            price = 0.005 * (price[0] + price[1])
     else:
-        price = float(price[0])
+        price = 0.01 * price[0])
 
     dict_dish = {
         'title': title,
@@ -91,6 +91,6 @@ email.send_keys('email АДРЕС')
 city_check.click()
 
 cart_total = driver.find_element_by_xpath("//span[@class = 'woocommerce-Price-amount amount']")
-cart_total = re.sub("\D", "", cart_total.text)
-if float(cart_total / 100) < 500:
-    print("Доставка будет платной")
+cart_total = int(re.sub("\D", "", cart_total.text))
+if cart_total * 0.01 < 500:
+    print("Доставка будет платной")     
